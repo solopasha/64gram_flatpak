@@ -10,7 +10,6 @@ finish-args:
   - --socket=wayland
   - --socket=fallback-x11
   - --socket=pulseaudio
-  - --device=all
   - --talk-name=org.gnome.Mutter.IdleMonitor
   - --talk-name=org.kde.StatusNotifierWatcher
   - --talk-name=com.canonical.AppMenu.Registrar
@@ -522,22 +521,23 @@ modules:
     builddir: true
     build-options:
       arch:
-        aarch64:
-          cflags: -g1
-          cxxflags: -g1
+        x86_64:
+          cflags: -g0
+          cxxflags: -g0
     config-opts:
       - -DCMAKE_BUILD_TYPE=None
       - -DTDESKTOP_API_ID=611335
       - -DTDESKTOP_API_HASH=d524b414d21f4d37f08684c1df41ac9c
       - -DDESKTOP_APP_USE_PACKAGED_LAZY=ON
+      - -DDESKTOP_APP_USE_PACKAGED_FONTS=ON
     sources:
       - type: git
-        url: https://github.com/telegramdesktop/tdesktop.git
-        commit: 0c61e0e184db790359704ddf3b91c915ead19fd0
-        tag: v4.8.7
+        url: https://github.com/TDesktop-x64/tdesktop.git
+        commit: 4c1eb1bb98de134e926b33b29017627145a04bb1
+        tag: v1.0.86
         x-checker-data:
           type: json
-          url: https://api.github.com/repos/telegramdesktop/tdesktop/releases
+          url: https://api.github.com/repos/TDesktop-x64/tdesktop/releases
           tag-query: first | .tag_name
           timestamp-query: first | .published_at
           version-query: $tag | sub("^[vV]"; "")
@@ -548,3 +548,6 @@ modules:
           - sed -i 's/set_property(TARGET cppgir PROPERTY CXX_STANDARD 14)/set_property(TARGET
             cppgir PROPERTY CXX_STANDARD 17)/' cmake/external/glib/cppgir/CMakeLists.txt
           - sed -i '/-Werror/d' Telegram/ThirdParty/dispatch/cmake/modules/DispatchCompilerWarnings.cmake
+      - type: patch
+        paths:
+          - block-sponsored_messages.patch
