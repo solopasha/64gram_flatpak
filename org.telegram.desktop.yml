@@ -1,6 +1,6 @@
 id: org.telegram.desktop
 runtime: org.freedesktop.Platform
-runtime-version: "22.08"
+runtime-version: '22.08'
 sdk: org.freedesktop.Sdk
 command: telegram-desktop
 rename-icon: telegram
@@ -24,7 +24,7 @@ add-extensions:
   org.freedesktop.Platform.ffmpeg-full:
     directory: lib/ffmpeg
     add-ld-path: .
-    version: "22.08"
+    version: '22.08'
     autodownload: true
     autodelete: false
   org.telegram.desktop.webview:
@@ -53,9 +53,9 @@ cleanup:
   - /modules
   - /share/doc
   - /share/man
-  - "*.prl"
-  - "*.la"
-  - "*.a"
+  - '*.prl'
+  - '*.la'
+  - '*.a'
 modules:
   - name: yasm
     buildsystem: cmake-ninja
@@ -70,7 +70,7 @@ modules:
           project-id: 5286
           url-template: https://www.tortall.net/projects/yasm/releases/yasm-$version.tar.gz
     cleanup:
-      - "*"
+      - '*'
 
   - name: xcursorgen
     sources:
@@ -82,7 +82,7 @@ modules:
           project-id: 21210
           url-template: https://xorg.freedesktop.org/archive/individual/app/xcursorgen-$version.tar.gz
     cleanup:
-      - "*"
+      - '*'
 
   - name: dmz-cursor-theme
     buildsystem: simple
@@ -119,7 +119,7 @@ modules:
           type: pypi
           name: Jinja2
     cleanup:
-      - "*"
+      - '*'
 
   - name: systemd
     buildsystem: meson
@@ -337,8 +337,8 @@ modules:
       - -Dtests=false
     sources:
       - type: archive
-        url: https://download.gnome.org/sources/glib/2.77/glib-2.77.0.tar.xz
-        sha256: 1897fd8ad4ebb523c32fabe7508c3b0b039c089661ae1e7917df0956a320ac4d
+        url: https://download.gnome.org/sources/glib/2.76/glib-2.76.4.tar.xz
+        sha256: 5a5a191c96836e166a7771f7ea6ca2b0069c603c7da3cba1cd38d1694a395dda
         x-checker-data:
           type: gnome
           name: glib
@@ -353,8 +353,8 @@ modules:
       - -Dbuild-examples=false
     sources:
       - type: archive
-        url: https://download.gnome.org/sources/glibmm/2.77/glibmm-2.77.0.tar.xz
-        sha256: 7cb34684e7ac6dfbf83492a52dff3f919e2fff63eb7810613bf71eb272d5450e
+        url: https://download.gnome.org/sources/glibmm/2.76/glibmm-2.76.0.tar.xz
+        sha256: 8637d80ceabd94fddd6e48970a082a264558d4ab82684e15ffc87e7ef3462ab2
         x-checker-data:
           type: gnome
           name: glibmm
@@ -426,7 +426,7 @@ modules:
           project-id: 7927
           url-template: https://download.qt.io/archive/qt/$major.$minor/$version/submodules/qtshadertools-everywhere-src-$version.tar.xz
     cleanup:
-      - "*"
+      - '*'
 
   - name: qtdeclarative
     buildsystem: cmake-ninja
@@ -514,7 +514,7 @@ modules:
           timestamp-query: >-
             .commit.committer.date
     cleanup:
-      - "*"
+      - '*'
 
   - name: telegram-desktop
     buildsystem: cmake-ninja
@@ -541,6 +541,7 @@ modules:
           tag-query: first | .tag_name
           timestamp-query: first | .published_at
           version-query: $tag | sub("^[vV]"; "")
+        tag: v1.0.86
       - type: shell
         commands:
           - sed -ri 's@experimental(/|::)@@' cmake/external/glib/cppgir/tools/{cppgir,genns}.cpp
