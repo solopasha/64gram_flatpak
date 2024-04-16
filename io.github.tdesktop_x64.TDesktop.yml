@@ -1,6 +1,6 @@
-id: org.telegram.desktop
+id: io.github.tdesktop_x64.TDesktop
 runtime: org.freedesktop.Platform
-runtime-version: '24.08'
+runtime-version: "24.08"
 sdk: org.freedesktop.Sdk
 command: telegram-desktop
 rename-icon: telegram
@@ -25,7 +25,7 @@ add-extensions:
   org.freedesktop.Platform.ffmpeg-full:
     directory: lib/ffmpeg
     add-ld-path: .
-    version: '24.08'
+    version: "24.08"
     autodownload: true
     autodelete: false
   org.telegram.desktop.webview:
@@ -52,9 +52,9 @@ cleanup:
   - /modules
   - /share/doc
   - /share/man
-  - '*.prl'
-  - '*.la'
-  - '*.a'
+  - "*.prl"
+  - "*.la"
+  - "*.a"
 modules:
   - name: yasm
     buildsystem: cmake-ninja
@@ -69,7 +69,7 @@ modules:
           project-id: 5286
           url-template: https://www.tortall.net/projects/yasm/releases/yasm-$version.tar.gz
     cleanup:
-      - '*'
+      - "*"
 
   - name: jinja2
     buildsystem: simple
@@ -98,7 +98,7 @@ modules:
           type: pypi
           name: Jinja2
     cleanup:
-      - '*'
+      - "*"
 
   - name: systemd
     buildsystem: meson
@@ -135,7 +135,7 @@ modules:
         linkflags="$LDFLAGS" -j $FLATPAK_BUILDER_N_JOBS install
     sources:
       - type: archive
-        url: https://boostorg.jfrog.io/artifactory/main/release/1.87.0/source/boost_1_87_0.tar.bz2
+        url: https://archives.boost.io/release/1.87.0/source/boost_1_87_0.tar.bz2
         sha256: af57be25cb4c4f4b413ed692fe378affb4352ea50fbe294a11ef548f4d527d89
         x-checker-data:
           type: anitya
@@ -302,7 +302,7 @@ modules:
           project-id: 7927
           url-template: https://download.qt.io/archive/qt/$major.$minor/$version/submodules/qtshadertools-everywhere-src-$version.tar.xz
     cleanup:
-      - '*'
+      - "*"
 
   - name: qtdeclarative
     buildsystem: cmake-ninja
@@ -368,6 +368,11 @@ modules:
   - name: tg_owt
     buildsystem: cmake-ninja
     builddir: true
+    build-options:
+      arch:
+        aarch64:
+          cflags: -g1
+          cxxflags: -g1
     config-opts:
       - -DCMAKE_BUILD_TYPE=None
     sources:
@@ -390,32 +395,25 @@ modules:
           timestamp-query: >-
             .commit.committer.date
     cleanup:
-      - '*'
+      - "*"
 
   - name: telegram-desktop
     buildsystem: cmake-ninja
     builddir: true
-    build-options:
-      arch:
-        aarch64:
-          cflags: -g1
-          cxxflags: -g1
     config-opts:
       - -DCMAKE_BUILD_TYPE=None
       - -DTDESKTOP_API_ID=611335
       - -DTDESKTOP_API_HASH=d524b414d21f4d37f08684c1df41ac9c
       - -DDESKTOP_APP_USE_PACKAGED_LAZY=ON
+      - -DDESKTOP_APP_USE_PACKAGED_FONTS=ON
+      - -DDESKTOP_APP_DISABLE_AUTOUPDATE=ON
     sources:
       - type: git
-        url: https://github.com/telegramdesktop/tdesktop.git
-        commit: 46bf7781aaf8b0aa0a3d0b9371d6f3c41f34df7e
-        tag: v5.10.7
-        x-checker-data:
-          type: json
-          url: https://api.github.com/repos/telegramdesktop/tdesktop/releases
-          tag-query: first | .tag_name
-          timestamp-query: first | .published_at
-          version-query: $tag | sub("^[vV]"; "")
+        url: https://github.com/TDesktop-x64/tdesktop.git
+        commit: 547bba18dfaceb3888d60ac1d2c16d0b7acdad46
       - type: shell
         commands:
           - sed -i '/-Werror/d' Telegram/ThirdParty/dispatch/cmake/modules/DispatchCompilerWarnings.cmake
+      - type: patch
+        paths:
+          - block-sponsored_messages.patch
